@@ -2,11 +2,8 @@ package tech.codegrilldeveloperblog;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -76,6 +73,13 @@ class CalculatorTest {
         assertEquals(expectedExceptionMessage, actualException.getMessage(), "Unexpected exception message");
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"Andreas", "James", "Booska"})
+    void valueSourceDemo(String firstName){
+        System.out.println(firstName);
+        assertNotNull(firstName);
+    }
+
     @DisplayName("Test Integer subtraction [minuend, subtrahend, expectedResult]")
     @ParameterizedTest
 //    @MethodSource()
@@ -87,12 +91,13 @@ class CalculatorTest {
 //            "33, 23, 10",
 //            "7, 3, 4",
 //    })
-    @CsvSource({
-            "apple, orange",
-            "apple, strawberry",
-            "apple, ''",
-            "apple, ",
-    })
+//    @CsvSource({
+//            "apple, orange",
+//            "apple, strawberry",
+//            "apple, ''",
+//            "apple, ",
+//    })
+    @CsvFileSource(resources = "/integerSubtraction.csv")
     void integerSubtraction(int minuend, int subtrahend, int expectedResult) {
 
         System.out.println("Running Test " + minuend + " - " + subtrahend + " = " + expectedResult);

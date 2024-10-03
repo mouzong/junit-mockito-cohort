@@ -1,6 +1,11 @@
 package tech.codegrilldeveloperblog;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -70,16 +75,12 @@ class CalculatorTest {
         assertEquals(expectedExceptionMessage, actualException.getMessage(), "Unexpected exception message");
     }
 
-    @Test
-    @DisplayName("Test 5 - 3 = 2")
-    void integerSubtraction() {
-        System.out.println("Running Test 5 - 3 = 2");
+    @DisplayName("Test Integer subtraction [minuend, subtrahend, expectedResult]")
+    @ParameterizedTest
+    @MethodSource("integerSubtractionInputParameters")
+    void integerSubtraction(int minuend, int subtrahend, int expectedResult) {
 
-
-        // Arrange  // Given
-        int minuend = 5;
-        int subtrahend = 3;
-        int expectedResult = 2;
+        System.out.println("Running Test "+minuend+" - "+subtrahend+" = "+expectedResult);
 
         // Act  // When
         int result = calculator.integerSubtraction(minuend, subtrahend);
@@ -87,5 +88,13 @@ class CalculatorTest {
         // Assert   // Then
         assertEquals(expectedResult, result,
                 () -> minuend + " - " + subtrahend + " did not produce " + result);
+    }
+
+    private static Stream<Arguments> integerSubtractionInputParameters(){
+        return Stream.of(
+                Arguments.of(5,3,2),
+                Arguments.of(54,1,53),
+                Arguments.of(24,6,18)
+        );
     }
 }
